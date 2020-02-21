@@ -19,7 +19,7 @@ namespace MarsRoverLibrary
             return _map.Obstacles.Contains(coordinate);
         }
 
-        private void MoveForward()
+        private void Move(int steps = 1)
         {
             Coordinate newCoordinate = null;
             switch (Position.Direction)
@@ -28,7 +28,7 @@ namespace MarsRoverLibrary
                     newCoordinate = new Coordinate()
                     {
                         X = Position.X,
-                        Y = Position.Y + 1
+                        Y = Position.Y + steps
                     };
                     _map.CheckBoundaries(newCoordinate);
                     if (Probe(newCoordinate))
@@ -41,7 +41,7 @@ namespace MarsRoverLibrary
                     newCoordinate = new Coordinate()
                     {
                         X = Position.X,
-                        Y = Position.Y - 1
+                        Y = Position.Y - steps
                     };
                     _map.CheckBoundaries(newCoordinate);
                     if (Probe(newCoordinate))
@@ -53,7 +53,7 @@ namespace MarsRoverLibrary
                 case 'E':
                     newCoordinate = new Coordinate()
                     {
-                        X = Position.X + 1,
+                        X = Position.X + steps,
                         Y = Position.Y
                     };
                     _map.CheckBoundaries(newCoordinate);
@@ -66,7 +66,7 @@ namespace MarsRoverLibrary
                 case 'W':
                     newCoordinate = new Coordinate()
                     {
-                        X = Position.X - 1,
+                        X = Position.X - steps,
                         Y = Position.Y
                     };
                     _map.CheckBoundaries(newCoordinate);
@@ -81,66 +81,14 @@ namespace MarsRoverLibrary
             }
         }
 
+        private void MoveForward()
+        {
+            Move(1);
+        }
+
         private void MoveBackward()
         {
-            Coordinate newCoordinate = null;
-            switch (Position.Direction)
-            {
-                case 'N':
-                    newCoordinate = new Coordinate()
-                    {
-                        X = Position.X,
-                        Y = Position.Y - 1
-                    };
-                    _map.CheckBoundaries(newCoordinate);
-                    if (Probe(newCoordinate))
-                    {
-                        throw new RoverObstacleException();
-                    }
-                    Position.CopyFromCoordinate(newCoordinate);
-                    break;
-                case 'S':
-                    newCoordinate = new Coordinate()
-                    {
-                        X = Position.X,
-                        Y = Position.Y + 1
-                    };
-                    _map.CheckBoundaries(newCoordinate);
-                    if (Probe(newCoordinate))
-                    {
-                        throw new RoverObstacleException();
-                    }
-                    Position.CopyFromCoordinate(newCoordinate);
-                    break;
-                case 'E':
-                    newCoordinate = new Coordinate()
-                    {
-                        X = Position.X - 1,
-                        Y = Position.Y
-                    };
-                    _map.CheckBoundaries(newCoordinate);
-                    if (Probe(newCoordinate))
-                    {
-                        throw new RoverObstacleException();
-                    }
-                    Position.CopyFromCoordinate(newCoordinate);
-                    break;
-                case 'W':
-                    newCoordinate = new Coordinate()
-                    {
-                        X = Position.X + 1,
-                        Y = Position.Y
-                    };
-                    _map.CheckBoundaries(newCoordinate);
-                    if (Probe(newCoordinate))
-                    {
-                        throw new RoverObstacleException();
-                    }
-                    Position.CopyFromCoordinate(newCoordinate);
-                    break;
-                default:
-                    throw new RoverUnknownCommandException();
-            }
+            Move(-1);            
         }
 
         private void TurnLeft()
